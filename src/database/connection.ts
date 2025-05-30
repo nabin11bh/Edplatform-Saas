@@ -1,4 +1,4 @@
-import { Sequelize } from "sequelize";
+import { Sequelize } from "sequelize-typescript";
 
 const sequelize = new Sequelize({
     database:process.env.DB_NAME,
@@ -6,7 +6,8 @@ const sequelize = new Sequelize({
     password: process.env.DB_PASSWORD,
     host:process.env.DB_HOST,
     dialect: "mysql",
-    port:  Number(process.env.DB_PORT)
+    port:  Number(process.env.DB_PORT),
+    models : [__dirname + '/models']
 
 })
 
@@ -17,5 +18,12 @@ sequelize.authenticate()
   .catch((error) => {
     console.log(error);
   });
+
+  //migrate garne 
+  sequelize.sync({force: false})
+    .then(()=>{
+      console.log("migrated successfully")
+    })
+  
 
   export default sequelize
