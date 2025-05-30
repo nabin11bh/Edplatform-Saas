@@ -11,6 +11,11 @@ const sequelize = new Sequelize({
 })
 
 sequelize.authenticate()
-.then((=>{
-    console.log("Authenticated,connected")
-}))
+  .then(() => {
+    console.log("Authenticated,Connected");
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+
+  export default sequelize
