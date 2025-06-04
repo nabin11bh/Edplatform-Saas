@@ -16,11 +16,20 @@
 */
 import {Request, Response} from "express"
 import User from "../../../database/models/user.model"
+import bcrypt from "bcrypt"
 
 //json data--> req.body 
 // files--> req.file
 
-const registerUser = async (req:Request,res:Response)=>{
+/*const registerUser = async (req:Request,res:Response)=>{
+    if(req.body == undefined){
+        console.log("triggered")
+        res.status(400).json({
+            message : "No data was send"
+        })
+        return
+    }
+
    const  {username,password,email} = req.body
    if(!username||!password||!email){
     res.status(400).json({
@@ -32,7 +41,7 @@ const registerUser = async (req:Request,res:Response)=>{
     //insert into users table
     await User.create({
         username : username,
-        password : password,
+        password : bcrypt.hashSync(password,10),
         email  : email
     })
     res.status(200).json({
@@ -44,3 +53,45 @@ const registerUser = async (req:Request,res:Response)=>{
 }
 
 export {registerUser}
+*/
+
+class AuthController{
+    static async registerUser(req:Request,res:Response){
+     if(req.body == undefined){
+         console.log("triggereed")
+         res.status(400).json({
+             message  : "No data was sent!!"
+         })
+         return
+     }
+     const {username,password,email} = req.body
+     if(!username || !password || !email){
+       res.status(400).json({
+          message : "Please provide username, password, email"
+      })
+      return
+     }
+ //    const [data] =  await User.findAll({
+ //         where : {
+ //             email
+ //         }
+ //     })
+ //     if(data){
+ //         // already exists with that email 
+ //     }
+      // insert into Users table 
+      await User.create({
+          username :username, 
+          password : bcrypt.hashSync(password,12), 
+          email : email
+      })
+      res.status(201).json({
+          message : "User registered successfully"
+      })
+    }
+ }
+ 
+ export default AuthController
+ 
+ 
+ 
