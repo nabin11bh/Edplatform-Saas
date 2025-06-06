@@ -89,6 +89,38 @@ class AuthController{
           message : "User registered successfully"
       })
     }
+   async loginUser(req:Request,res:Response){
+        const{email,password}=req.body
+        if(!email || ! password){
+            res.status(400).json({
+                message : "Please provide email, password"
+            })
+            return
+        }
+        //check if email exist or not in users table
+        const data = await User.findAll({
+                where : {
+                    email
+                }
+        })
+    
+        if(data.length == 0){
+            res.status(404).json({
+                message : " Not Registered"
+            })
+        }else{
+            //check pw
+          const isPasswordMatch = bcrypt.compareSync(password,data[0].password)
+          if(isPasswordMatch){
+            //login Vayo, token generated
+          }else{
+            res.status(403).json({
+                message : "Invalid email or Password"
+            })
+          }
+
+        }
+    }
  }
  
  export default AuthController
