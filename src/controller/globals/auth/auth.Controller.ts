@@ -17,6 +17,7 @@
 import {Request, Response} from "express"
 import User from "../../../database/models/user.model"
 import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken"
 
 //json data--> req.body 
 // files--> req.file
@@ -113,6 +114,11 @@ class AuthController{
           const isPasswordMatch = bcrypt.compareSync(password,data[0].password)
           if(isPasswordMatch){
             //login Vayo, token generated
+           const token = jwt.sign({id : data[0].id}, "secrete",{
+                expiresIn : "90d"
+            })
+            
+    
           }else{
             res.status(403).json({
                 message : "Invalid email or Password"
