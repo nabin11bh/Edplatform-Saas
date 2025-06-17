@@ -1,40 +1,50 @@
-import {Table,Column,Model,DataType} from "sequelize-typescript"
+
+import {Table,Column,Model,DataType, PrimaryKey} from "sequelize-typescript"
 
 @Table({
-    tableName : 'users',
-    modelName : 'User',
+    tableName : 'users', // uta gui ma dekiney name vayo(phpmyadminma)
+    modelName : 'User', // project vitra mathi ko table lai access garne name 
     timestamps : true
 })
 
-class User extends Model {
+class User extends Model{
     @Column({
-        primaryKey: true,
-        type : DataType.UUIDV4
+        primaryKey : true, 
+        type : DataType.UUID, 
+        defaultValue : DataType.UUIDV4
     })
-    declare id  : string
+    declare id : string
+    
+    @Column({
+        type : DataType.STRING, 
+   
+    })
+    declare userName : string 
 
     @Column({
         type : DataType.STRING
     })
-    declare username : string
-     
+    declare password : string 
+
     @Column({
-        type : DataType.STRING
+        type : DataType.STRING,
+        unique : true
     })
-    declare password : string
+    declare email:string
+    @Column({
+        type : DataType.ENUM('teacher','institute','super-admin','student'), 
+        defaultValue : 'student', 
+    })
+    declare role:string
 
     @Column({
         type : DataType.STRING
     })
-    declare email : string
+    declare currentInstituteNumber : string 
 
-    @Column({
-        type : DataType.ENUM('teacher','institute','super-admin','admin','student'),
-        defaultValue : 'student',
-    })
-    declare role : string
+
 
 
 }
 
-export default User
+export default User 
