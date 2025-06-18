@@ -8,7 +8,7 @@ import generateRandomNumber from "../../services/generateRandomNumber";
 
 
 const createInstitute = async (req:IExtendedRequest,res:Response,next:NextFunction)=>{
-        // console.log("Triggered")
+        
      
       try {
         const {instituteName,instituteEmail,institutePhoneNumber,instituteAddress} = req.body 
@@ -20,11 +20,8 @@ const createInstitute = async (req:IExtendedRequest,res:Response,next:NextFuncti
             })
             return
         }
-//test
 
-        // User.findByPk(req.user && req.user.id)
-        // aayo vane - insitute create garnu paryo --> insitute_123123, course_123132 
-        // institute (name)
+
 
         const instituteNumber =   generateRandomNumber()
        await sequelize.query(`CREATE TABLE IF NOT EXISTS institute_${instituteNumber} (
@@ -42,7 +39,8 @@ const createInstitute = async (req:IExtendedRequest,res:Response,next:NextFuncti
         await sequelize.query(`INSERT INTO institute_${instituteNumber}(instituteName,instituteEmail,institutePhoneNumber,instituteAddress,institutePanNo,instituteVatNo) VALUES(?,?,?,?,?,?)`,{
             replacements : [instituteName,instituteEmail,institutePhoneNumber,instituteAddress,institutePanNo,instituteVatNo]
         })
-        // 
+        
+
         // to create user_institute history table jaha chai users le k k institute haru create garyo sabai ko number basnu paryo 
         await sequelize.query(`CREATE TABLE IF NOT EXISTS user_institute(
             id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, 
@@ -55,9 +53,7 @@ const createInstitute = async (req:IExtendedRequest,res:Response,next:NextFuncti
                 replacements : [req.user.id,instituteNumber]
             })
 
-            // const user =  await User.findByPk(req.user.id)
-            // user?.currentInstituteNumber = instituteNumber
-            // await user?.save()
+      
 
            await User.update({
             currentInstituteNumber : instituteNumber, 
@@ -88,7 +84,7 @@ const createTeacherTable = async (req:IExtendedRequest,res:Response,next:NextFun
             )`)
             next()
        
-   
+   return
 }
 
 const createStudentTable = async(req:IExtendedRequest,res:Response,next:NextFunction)=>{
@@ -113,5 +109,6 @@ const createCourseTable = async(req:IExtendedRequest,res:Response)=>{
             message : "Institute created vayoo!!!", 
             instituteNumber, 
         })
+        return
 }
 export  {createInstitute,createTeacherTable,createStudentTable,createCourseTable}
