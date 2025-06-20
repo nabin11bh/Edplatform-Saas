@@ -5,8 +5,6 @@ import User from "../../database/models/user.model";
 import generateRandomNumber from "../../services/generateRandomNumber";
 
 
-
-
 const createInstitute = async (req:IExtendedRequest,res:Response,next:NextFunction)=>{
         
      

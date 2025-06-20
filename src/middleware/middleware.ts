@@ -20,16 +20,15 @@ const isLoggedIn = async (req:IExtendedRequest,res:Response,next:NextFunction)=>
         
     }
     // verify garne 
-    jwt.verify(token,'secret',async (erroraayo,resultaayo : any)=>{
-        if(erroraayo){
+    jwt.verify(token,'secret',async (error,result : any)=>{
+        if(error){
             res.status(403).json({
                 message : "Token invalid "
             })
         }else{
             // verified vayo 
            
-            const userData = await User.findByPk(resultaayo.id)
-            
+            const userData = await User.findByPk(result.id)
             
             if(!userData){
                 res.status(403).json({
