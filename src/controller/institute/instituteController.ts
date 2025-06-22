@@ -7,7 +7,7 @@ import generateRandomNumber from "../../services/generateRandomNumber";
 
 const createInstitute = async (req:IExtendedRequest,res:Response,next:NextFunction)=>{
         
-     
+
       try {
         const {instituteName,instituteEmail,institutePhoneNumber,instituteAddress} = req.body 
         const instituteVatNo = req.body.instituteVatNo || null 
@@ -104,7 +104,7 @@ const createCourseTable = async(req:IExtendedRequest,res:Response)=>{
         )`)
 
         res.status(200).json({
-            message : "Institute created vayoo!!!", 
+            message : "Institute created !", 
             instituteNumber, 
         })
         return

@@ -38,7 +38,7 @@ class AuthController{
      }
  
       await User.create({
-          username :username, 
+          userName :username, 
           password : bcrypt.hashSync(password,12), 
           email : email
       })
