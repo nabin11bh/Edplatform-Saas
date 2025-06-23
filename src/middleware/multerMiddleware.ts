@@ -4,7 +4,7 @@
 import { Request } from "express";
 import multer from "multer";
 
-// locally file store garnu vayo 
+// locally file store garna
 const storage = multer.diskStorage({
     // location incoming file kata rakne vanne ho 
     // cb - callback function 

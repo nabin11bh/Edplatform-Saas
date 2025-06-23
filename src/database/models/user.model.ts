@@ -1,5 +1,5 @@
 
-import {Table,Column,Model,DataType, PrimaryKey} from "sequelize-typescript"
+import {Table,Column,Model,DataType, PrimaryKey, AllowNull} from "sequelize-typescript"
 
 @Table({
     tableName : 'users', // uta gui ma dekiney name vayo(phpmyadminma)
@@ -38,11 +38,11 @@ class User extends Model{
     declare role:string
 
     @Column({
-        type : DataType.STRING
-    })
-    declare currentInstituteNumber : string 
-
-
+        type: DataType.STRING,
+        allowNull: true,
+      })
+      declare currentInstituteNumber: string | null;
+      
 
 
 }

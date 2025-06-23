@@ -63,7 +63,8 @@ const createInstitute = async (req:IExtendedRequest,res:Response,next:NextFuncti
             })
           }
          req.instituteNumber = instituteNumber  
-        // req.user?.instituteNumber = instituteNumber; 
+         
+        //req.user?.instituteNumber = instituteNumber; 
         next()
       } catch (error) {
         console.log(error)
@@ -74,6 +75,13 @@ const createInstitute = async (req:IExtendedRequest,res:Response,next:NextFuncti
 const createTeacherTable = async (req:IExtendedRequest,res:Response,next:NextFunction)=>{
           
             const instituteNumber = req.instituteNumber
+            if (!instituteNumber) {
+                return res.status(400).json({
+                    message: "Missing instituteNumber"
+                });
+            }
+                
+
             await sequelize.query(`CREATE TABLE IF NOT EXISTS teacher_${instituteNumber}(
             id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, 
             teacherName VARCHAR(255) NOT NULL, 
@@ -95,18 +103,32 @@ const createStudentTable = async(req:IExtendedRequest,res:Response,next:NextFunc
     next()
 }
 
-const createCourseTable = async(req:IExtendedRequest,res:Response)=>{
-    const instituteNumber = req.instituteNumber 
+const createCourseTable = async (req: IExtendedRequest, res: Response) => {
+    const instituteNumber = req.instituteNumber;
+
+    if (!instituteNumber) {
+        return res.status(400).json({
+            message: "Missing instituteNumber"
+        });
+    }
+
     await sequelize.query(`CREATE TABLE IF NOT EXISTS course_${instituteNumber}(
-        id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+        id VARCHAR(36) PRIMARY KEY DEFAULT (UUID()),
         courseName VARCHAR(255) NOT NULL UNIQUE, 
-        coursePrice VARCHAR(255) NOT NULL
+        coursePrice VARCHAR(255) NOT NULL, 
+        courseDuration VARCHAR(100) NOT NULL, 
+        courseLevel ENUM('beginner','intermediate','advance') NOT NULL, 
+        courseThumbnail VARCHAR(200),
+        courseDescription TEXT,  
+        createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
+        updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
         )`)
 
-        res.status(200).json({
-            message : "Institute created !", 
-            instituteNumber, 
-        })
-        return
-}
+    res.status(200).json({
+        message: "Institute created!",
+        instituteNumber,
+    });
+};
+
+
 export  {createInstitute,createTeacherTable,createStudentTable,createCourseTable}
