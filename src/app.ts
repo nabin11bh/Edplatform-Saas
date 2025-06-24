@@ -2,7 +2,8 @@ import express from 'express'
 const app = express()
 import authRoute from "./routes/globals/auth/authRoute"
 import instituteRoute from "./routes/institute/instituteRoute"
-import courseRoute from "./routes/institute/course/courseRoute"
+import courseRoute from "./routes/course/courseRoute"
+
 
 
 
