@@ -10,6 +10,7 @@ import courseRoute from "./routes/course/courseRoute"
 
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 
 app.use("/api",authRoute)

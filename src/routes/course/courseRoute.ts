@@ -3,7 +3,7 @@ import isLoggedIn from "../../middleware/middleware"
 import asyncErrorHandling from "../../services/asyncErrorHandling"
 import { createCourse,deleteCourse,getAllCourse,getSingleCourse } from "../../controller/institute/course/courseController"
 import multer from "multer"
-import { storage } from "../../middleware/multerMiddleware"
+import {cloudinary,storage } from "../../services/cloudinaryConfig"
 
 
 const upload = multer({storage : storage, 

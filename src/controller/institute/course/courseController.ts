@@ -6,23 +6,25 @@ import { QueryTypes } from "sequelize";
 
 
 
+
 const createCourse = async (req:IExtendedRequest,res:Response)=>{
     console.log("req.body:", req.body);
 console.log("req.file:", req.file);
 
-    const instituteNumber = req.user?.currentInstituteNumber
-const {coursePrice, courseName,courseDescription, courseDuration, courseLevel,categoryId } = req.body 
-if(!coursePrice || !courseName || !courseDescription || !courseDuration || !courseLevel || !categoryId){
+    const instituteNumber = req.user?.currentInstituteNumber 
+const {coursePrice, courseName,courseDescription, courseDuration, courseLevel} = req.body 
+if(!coursePrice || !courseName || !courseDescription || !courseDuration || !courseLevel){
     return res.status(400).json({
         messsage : "Please provide coursePrice, courseName, courseDescription, courseDuration, courseLevel,categoryId"
     })
 }
 
 const courseThumbnail = req.file ? req.file.path : null
+console.log(courseThumbnail,"coursethumbnail")
 
-const returnedData = await sequelize.query(`INSERT INTO course_${instituteNumber}(coursePrice,courseName,courseDescription,courseDuration,courseLevel,courseThumbnail,categoryId) VALUES(?,?,?,?,?,?,?)`,{
+const returnedData = await sequelize.query(`INSERT INTO course_${instituteNumber}(coursePrice,courseName,courseDescription,courseDuration,courseLevel,courseThumbnail) VALUES(?,?,?,?,?,?)`,{
     type : QueryTypes.INSERT,
-    replacements : [coursePrice, courseName,courseDescription,courseDuration,courseLevel,courseThumbnail,categoryId]
+    replacements : [coursePrice, courseName,courseDescription,courseDuration,courseLevel,courseThumbnail]
 })
 
 console.log(returnedData)
