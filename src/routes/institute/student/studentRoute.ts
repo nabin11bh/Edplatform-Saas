@@ -3,8 +3,8 @@
 
 
 import express, { Router } from "express"
-import asyncErrorHandling from "../../services/asyncErrorHandling"
-import { getStudents } from "../../controller/institute/student/studentController"
+import asyncErrorHandling from "../../../services/asyncErrorHandling"
+import { getStudents } from "../../../controller/institute/student/studentController"
 
 
 

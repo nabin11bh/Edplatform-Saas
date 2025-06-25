@@ -3,6 +3,7 @@ import sequelize from "../../database/connection";
 import { IExtendedRequest } from "../../middleware/type";
 import User from "../../database/models/user.model";
 import generateRandomNumber from "../../services/generateRandomNumber";
+import categories from "../../seed";
 
 
 const createInstitute = async (req:IExtendedRequest,res:Response,next:NextFunction)=>{
@@ -128,7 +129,29 @@ const createCourseTable = async (req: IExtendedRequest, res: Response) => {
         message: "Institute created!",
         instituteNumber,
     });
+
 };
+const createCategoryTable = async(req:IExtendedRequest,res:Response,next:NextFunction)=>{
+    const instituteNumber = req.user?.currentInstituteNumber 
+    await sequelize.query(`CREATE TABLE IF NOT EXISTS category_${instituteNumber}(
+        id VARCHAR(36) PRIMARY KEY DEFAULT (UUID()),
+        categoryName VARCHAR(100) NOT NULL, 
+        categoryDescription TEXT,
+        createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
+        updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        )`)
+
+        categories.forEach(async function(category){
+            await sequelize.query(`INSERT INTO category_${instituteNumber}(categoryName,categoryDescription) VALUES(?,?)`,{
+                replacements : [category.categoryName,category.categoryDescription]
+            })
+
+        })
+        next()
+
+}
 
 
-export  {createInstitute,createTeacherTable,createStudentTable,createCourseTable}
+
+
+export  {createInstitute,createTeacherTable,createStudentTable,createCourseTable,createCategoryTable}
