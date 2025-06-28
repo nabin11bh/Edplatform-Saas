@@ -26,7 +26,7 @@ const getCategories = async(req:IExtendedRequest,res:Response)=>{
     const instituteNumber = req.user?.currentInstituteNumber
     const categories = await sequelize.query(`SELECT * FROM category_${instituteNumber}`,{
         type : QueryTypes.SELECT
-        // tapaile kasto type ko operation garnu vako ho tyo dinu paryo
+        //kasto type ko operation gareko ho tyo dinu paryo
     })
     res.status(200).json({
         message : "Categories fetched successfully", 

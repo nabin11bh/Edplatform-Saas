@@ -29,4 +29,4 @@ router.route("/")
 
 router.route("/:id").get(asyncErrorHandling(getSingleCourse)).delete(isLoggedIn,asyncErrorHandling(deleteCourse))
 
-export default router
+export default router   

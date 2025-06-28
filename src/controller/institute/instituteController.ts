@@ -4,6 +4,7 @@ import { IExtendedRequest } from "../../middleware/type";
 import User from "../../database/models/user.model";
 import generateRandomNumber from "../../services/generateRandomNumber";
 import categories from "../../seed";
+import { QueryInterface, QueryTypes } from "sequelize";
 
 
 const createInstitute = async (req:IExtendedRequest,res:Response,next:NextFunction)=>{
@@ -52,21 +53,24 @@ const createInstitute = async (req:IExtendedRequest,res:Response,next:NextFuncti
                 replacements : [req.user.id,instituteNumber]
             })
 
-      
-
-           await User.update({
-            currentInstituteNumber : instituteNumber, 
-            role : "institute"
-            },{
-                where : {
-                    id : req.user.id
-                }
-            })
-          }
-         req.instituteNumber = instituteNumber  
+    
+            await User.update({
+                currentInstituteNumber : instituteNumber, 
+                role : "institute"
+                },{
+                    where : {
+                        id : req.user.id
+                    }
+                })
+              }
          
-        //req.user?.instituteNumber = instituteNumber; 
-        next()
+              if(req.user){
+                  req.user.currentInstituteNumber = instituteNumber  
+              }
+            
+            // req.user?.instituteNumber = instituteNumber; 
+            next()
+       
       } catch (error) {
         console.log(error)
       }
@@ -87,11 +91,18 @@ const createTeacherTable = async (req:IExtendedRequest,res:Response,next:NextFun
             id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, 
             teacherName VARCHAR(255) NOT NULL, 
             teacherEmail VARCHAR(255) NOT NULL UNIQUE, 
-            teacherPhoneNumber VARCHAR(255) NOT NULL UNIQUE
+            teacherPhoneNumber VARCHAR(255) NOT NULL UNIQUE,
+            teacherExpertise VARCHAR(255),
+            teacherJoinedDate DATE,
+            teacherSalary VARCHAR(100),
+            teacherPhoto VARCHAR(100),
+            teacherPassword VARCHAR(255),
+            createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
+            updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
             )`)
             next()
        
-   return
+   
 }
 
 const createStudentTable = async(req:IExtendedRequest,res:Response,next:NextFunction)=>{
@@ -121,6 +132,8 @@ const createCourseTable = async (req: IExtendedRequest, res: Response) => {
         courseLevel ENUM('beginner','intermediate','advance') NOT NULL, 
         courseThumbnail VARCHAR(200),
         courseDescription TEXT,  
+        teacherId VARCHAR(36) REFERENCE teacher_${instituteNumber}(id),
+        categoryId VARCHAR(36) NOT NULL REFERENCE category_${instituteNumber} (id),
         createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
         updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
         )`)
