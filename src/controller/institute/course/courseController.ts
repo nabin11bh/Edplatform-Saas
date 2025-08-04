@@ -1,4 +1,3 @@
-
 import { Request, Response } from "express";
 import sequelize from "../../../database/connection";
 import { IExtendedRequest } from "../../../middleware/type";
@@ -6,25 +5,20 @@ import { QueryTypes } from "sequelize";
 
 
 
-
 const createCourse = async (req:IExtendedRequest,res:Response)=>{
-    console.log("req.body:", req.body);
-console.log("req.file:", req.file);
-
-    const instituteNumber = req.user?.currentInstituteNumber 
-const {coursePrice, courseName,courseDescription, courseDuration, courseLevel} = req.body 
-if(!coursePrice || !courseName || !courseDescription || !courseDuration || !courseLevel){
+    const instituteNumber = req.user?.currentInstituteNumber
+const {coursePrice, courseName,courseDescription, courseDuration, courseLevel,categoryId } = req.body 
+if(!coursePrice || !courseName || !courseDescription || !courseDuration || !courseLevel || !categoryId){
     return res.status(400).json({
         messsage : "Please provide coursePrice, courseName, courseDescription, courseDuration, courseLevel,categoryId"
     })
 }
 
 const courseThumbnail = req.file ? req.file.path : null
-console.log(courseThumbnail,"coursethumbnail")
 
-const returnedData = await sequelize.query(`INSERT INTO course_${instituteNumber}(coursePrice,courseName,courseDescription,courseDuration,courseLevel,courseThumbnail) VALUES(?,?,?,?,?,?)`,{
+const returnedData = await sequelize.query(`INSERT INTO course_${instituteNumber}(coursePrice,courseName,courseDescription,courseDuration,courseLevel,courseThumbnail,categoryId) VALUES(?,?,?,?,?,?,?)`,{
     type : QueryTypes.INSERT,
-    replacements : [coursePrice, courseName,courseDescription,courseDuration,courseLevel,courseThumbnail]
+    replacements : [coursePrice, courseName,courseDescription,courseDuration,courseLevel,courseThumbnail,categoryId]
 })
 
 console.log(returnedData)
@@ -61,7 +55,7 @@ const deleteCourse = async(req:IExtendedRequest,res:Response)=>{
 const getAllCourse = async (req:IExtendedRequest,res:Response)=>{
     const instituteNumber = req.user?.currentInstituteNumber; 
 
-    const courses = await sequelize.query(`SELECT * FROM course_${instituteNumber} JOIN category_${instituteNumber} ON course_${instituteNumber}.categoryId = category_${instituteNumber}.id`,{
+    const courses = await sequelize.query(`SELECT c.id,c.courseName FROM course_${instituteNumber} AS c JOIN category_${instituteNumber} AS cat ON c.categoryId = cat.id`,{
         type : QueryTypes.SELECT
     })
     res.status(200).json({
