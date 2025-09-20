@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response, response } from "express";
 import sequelize from "../../database/connection";
 import generateRandomInsituteNumber from "../../services/generateRandomNumber";
 import { IExtendedRequest } from "../../middleware/type";
@@ -101,6 +101,20 @@ const createTeacherTable = async (req:IExtendedRequest,res:Response,next:NextFun
               )`)
               next()
 }
+
+
+    //teacher-chapter
+    const createCourseChapterTable = async(req:IExtendedRequest,res:Response,next:NextFunction)=>{
+        const instituteNumber = req.user?.currentInstituteNumber
+        await sequelize.query(`CREATE TABLE IF NOT EXISTS course_chapter_${instituteNumber}(
+            id VARCHAR(36) PRIMARY KEY DEFAULT (UUID()),
+            chapterName VARCHAR(100) NOT NULL,
+            chapterDuration VARCHAR(255) NOT NULL,
+            chapterLevel ENUM('beginner','intermediate','advance') NOT NULL, 
+            couseID VARCHAR(36) REFERENCE course_${instituteNumber}(id) ON DELETE CASCADE ON UPDATE CASCADE,
+        )`)
+    }
+
 
 const createStudentTable = async(req:IExtendedRequest,res:Response,next:NextFunction)=>{
     
