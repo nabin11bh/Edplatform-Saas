@@ -1,9 +1,10 @@
 import express, { Request, Router } from "express"
-import isLoggedIn from "../../../middleware/middleware"
+import {isLoggedIn, restrictTo} from "../../../middleware/middleware"
 import asyncErrorHandling from "../../../services/asyncErrorHandling"
 import { createCourse,deleteCourse,getAllCourse,getSingleCourse } from "../../../controller/institute/course/courseController"
 import multer from "multer"
 import {cloudinary,storage } from "../../../services/cloudinaryConfig"
+import { UserRole } from "../../../middleware/type"
 
 
 const upload = multer({storage : storage, 
@@ -23,10 +24,10 @@ const upload = multer({storage : storage,
 const router:Router = express.Router()
 
 router.route("/")
-.post(upload.single('courseThumbnail'),isLoggedIn, asyncErrorHandling(createCourse))
+.post(upload.single('courseThumbnail'),isLoggedIn,restrictTo(UserRole.Institute) ,asyncErrorHandling(createCourse))
 .get(isLoggedIn, asyncErrorHandling(getAllCourse))
 
 
-router.route("/:id").get(asyncErrorHandling(getSingleCourse)).delete(isLoggedIn,asyncErrorHandling(deleteCourse))
+router.route("/:id").get(asyncErrorHandling(getSingleCourse)).delete(isLoggedIn,restrictTo(UserRole.Institute),asyncErrorHandling(deleteCourse))
 
 export default router   

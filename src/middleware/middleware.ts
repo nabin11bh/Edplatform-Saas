@@ -3,7 +3,7 @@
 import { NextFunction, Request, Response } from "express"
 import jwt from 'jsonwebtoken'
 import User from "../database/models/user.model"
-import { IExtendedRequest } from "./type"
+import { IExtendedRequest, UserRole } from "./type"
 
 const isLoggedIn = async (req:IExtendedRequest,res:Response,next:NextFunction)=>{
 
@@ -28,8 +28,11 @@ const isLoggedIn = async (req:IExtendedRequest,res:Response,next:NextFunction)=>
         }else{
             // verified 
            
-            const userData = await User.findByPk(result.id)
-            
+            const userData = await User.findByPk(result.id, {
+                attributes: ['id', 'currentInstituteNumber', 'role']
+              });
+              
+
             if(!userData){
                 res.status(403).json({
                     message : "No user with that id, invalid token "
@@ -42,6 +45,21 @@ const isLoggedIn = async (req:IExtendedRequest,res:Response,next:NextFunction)=>
     })
 }
 
+const restrictTo = (...roles:UserRole[]) => {
+    return (req: IExtendedRequest, res: Response, next: NextFunction) => {
+      // requesting user's role from token
+      const userRole = req.user?.role as UserRole
+  
+      if (roles.includes(userRole)) {
+        next();
+      } else {
+        res.status(403).json({
+          message: "You do not have permission to perform this action",
+        });
+      }
+    };
+  };
+  
 
 
-export default isLoggedIn
+export { isLoggedIn,restrictTo}

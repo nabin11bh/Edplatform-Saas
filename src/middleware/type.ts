@@ -1,9 +1,17 @@
 import { Request } from "express";
 
-export interface IExtendedRequest extends Request {
-  user?: {
-    id: string;
-    currentInstituteNumber?: string | number | null;
-  };
-  instituteNumber?: number; 
+export enum UserRole{
+       Teacher = 'teacher', 
+       Institute = 'institute', 
+       SuperAdmin = 'super-admin', 
+       Student = 'student'
+}
+
+export interface IExtendedRequest extends Request{
+       user ?: {
+       id     : string,
+       currentInstituteNumber ?: string | number | null, 
+       role : UserRole
+       }
+      
 }
