@@ -10,6 +10,7 @@ import teacherInstituteRoute from "./routes/institute/teacher/teacherRoute"
 import teacherRoute from './routes/teacher/teacherRoute'
 import lessonRoute from './routes/teacher/course/lessons/course-lesson'
 import chapterRoute from './routes/teacher/course/chapters/course-chapter-router'
+import studentInstituteRoute from './routes/student/institute/student-institute-route'
 
 import cors from 'cors'
 
@@ -40,6 +41,7 @@ app.use("/api/institute/teacher",teacherInstituteRoute);
 app.use("/api/teacher",teacherRoute)
 app.use("/api/teacher/course",chapterRoute)
 app.use("/api/teacher/course",lessonRoute)
+app.use("/api/student",studentInstituteRoute )
 
 
 

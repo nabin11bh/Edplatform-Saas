@@ -1,7 +1,7 @@
 
 
 import express, { Router } from 'express'
-import isLoggedIn from '../../../middleware/middleware';
+import {isLoggedIn} from '../../../middleware/middleware';
 import asyncErrorHandler from "../../../services/asyncErrorHandling"
 import { createTeacher, deleteTeacher, getTeachers } from '../../../controller/institute/teacher/teacherController';
 import upload from "../../../middleware/multerUpload"
