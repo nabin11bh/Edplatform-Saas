@@ -54,7 +54,7 @@ const fetchStudentCartItems = async(req:IExtendedRequest,res:Response)=>{
     cartDatas.push(...test)
     }
     res.status(200).json({
-        message : "Cart fetchd", data : cartDatas
+        message : "Cart fetched", data : cartDatas
     })
 
   
