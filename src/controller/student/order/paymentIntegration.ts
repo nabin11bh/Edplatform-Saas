@@ -17,7 +17,7 @@ const KhaltiPayment = async(data:IKhaltiData)=>{
         purchase_order_name : data.purchase_order_name,  
     },{
         headers : {
-            Authorization : "Key b68b4f0f4aa84599ad9b91c475ed6833"
+            Authorization : "Key a5d37c45f3944a2a8b7c233586d72dc6"
         }
     })
     return response

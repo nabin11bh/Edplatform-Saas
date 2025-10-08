@@ -9,9 +9,7 @@ import axios from "axios";
 import generateSha256Hash from "../../../services/generateSha256Hash";
 import base64 from 'base-64'
 
-// upload.fields([{ name: 'avatar1', maxCount: 1 }, {name:'avatar2', maxCount:1},{name:'avatar3', maxCount : 1}]
 
-//
 
 
 enum PaymentMethod{
