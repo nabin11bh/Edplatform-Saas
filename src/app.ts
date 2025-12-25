@@ -10,7 +10,10 @@ import teacherInstituteRoute from "./routes/institute/teacher/teacherRoute"
 import teacherRoute from './routes/teacher/teacherRoute'
 import lessonRoute from './routes/teacher/course/lessons/course-lesson'
 import chapterRoute from './routes/teacher/course/chapters/course-chapter-router'
-import studentInstituteRoute from './routes/student/institute/student-institute-route'
+import studentInstituteRoute from './routes/student/institute/student-institute.route'
+import studentCartRoute from './routes/student/cart/student-cart.route'
+import studentCourseOrderRoute from './routes/student/order/student-order.route'
+
 
 import cors from 'cors'
 
@@ -42,6 +45,12 @@ app.use("/api/teacher",teacherRoute)
 app.use("/api/teacher/course",chapterRoute)
 app.use("/api/teacher/course",lessonRoute)
 app.use("/api/student",studentInstituteRoute )
+
+// student route 
+app.use("/api/student",studentInstituteRoute)
+app.use('/api/student/',studentCartRoute)
+app.use("/api/student",studentCourseOrderRoute)
+
 
 
 
